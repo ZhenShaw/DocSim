@@ -1,0 +1,1 @@
+principle practice design implementation compiler interpreter topic lexical analysis parse theory symbol table type system scope semantic analysis intermediate representation runtime environment code generation basic program analysis optimization student construct compiler simple objectoriented language course program project prerequisites 103 103b 107 

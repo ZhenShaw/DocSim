@@ -1,0 +1,1 @@
+introduction building application android platform examines key concept android program tool chain application lifecycle view control intent design mobile uis networking thread feature weekly lecture series small programming project phone require phone make project engage prerequisite 106b java experience 106b level enrollment limited application require 

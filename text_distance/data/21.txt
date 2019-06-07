@@ -1,0 +1,1 @@
+principle practice engineering computer software hardware system topic include technique control complexity strong modularity use clientserver design virtual memory thread network atomicity coordination parallel activity security encryption performance optimization prerequisite 107 

@@ -1,0 +1,1 @@
+topic include count combinatorics random variable conditional probability independence distribution expectation point estimation limit theorem application probability computer science include machine learning use probability analysis algorithm prerequisites 103 106b x multivariate calculus level math 51 cme 100 equivalent 

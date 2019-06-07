@@ -1,0 +1,1 @@
+operate system design implementation basic structure synchronization communication mechanism implementation process process management schedule protection memory organization management include virtual memory io device management secondary storage file system prerequisite cs 110 

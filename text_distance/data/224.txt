@@ -1,0 +1,1 @@
+course explore philosophy fundamental functional program focus haskell language theoretical underpinnings practical application topic include functional abstraction function composition higherorder function immutable data structure type system various functional design pattern monads etc prerequisite cs107 equivalent experience 

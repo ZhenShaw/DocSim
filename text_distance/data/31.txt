@@ -1,0 +1,1 @@
+introduction use design implementation database dataintensive system include data model schema design data storage query processing query optimization cost estimation concurrency control transaction failure recovery distribute parallel execution semistructured database data system support advance analytics machine learn prerequisite 103 107 equivalent 

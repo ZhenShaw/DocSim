@@ -1,0 +1,1 @@
+text information retrieval system efficient text index boolean vector space probabilistic retrieval model rank rank aggregation evaluate ir system text cluster classification web search engine include crawl index linkbased algorithms web metadata question answer distribute word representation prerequisites cs 107 c 109 c 161 

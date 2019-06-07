@@ -1,0 +1,1 @@
+principle practice structure component computer network packet switch layer architecture application webhttp voiceoverip p2p file share socket program reliable transport tcpip reliable transfer flow control congestion control network layer name address rout local area network ethernet switch wireless networks network security prerequisite c 110 

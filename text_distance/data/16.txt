@@ -1,0 +1,1 @@
+introduction fundamental concept computer system explore computer system execute program manipulate data work c program language microprocessor topic cover include c programming language data representation machinelevel code computer arithmetic element code compilation memory organization management performance evaluation optimization prerequisites 106b x consent instructor 

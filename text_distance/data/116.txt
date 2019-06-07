@@ -1,0 +1,1 @@
+introduction computational complexity theory topic include p versus np problem diagonalization space complexity pspace savitchs theorem nlconl count problem pcompleteness circuit complexity pseudorandomness derandomization complexity approximation quantum compute complexity barrier prerequisites 154 equivalent mathematical maturity 

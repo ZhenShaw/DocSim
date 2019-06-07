@@ -1,0 +1,1 @@
+team project data mining machine learn largescale data include problem statement implementation evaluation solution student work real problem realworld data course provide access large realworld data access big data cloud compute infrastructure amazon ec2 google cloud platform lecture relevant material give hadoop spark hive amazon ec2 well topic relevance project 

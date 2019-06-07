@@ -1,0 +1,1 @@
+architecture data storage processing system include relational database cluster compute system stream processing machine learn system topic include database system architecture storage organization query optimization transaction management fault recovery parallel process focus key design idea share across many type dataintensive system prerequisites 145 161 

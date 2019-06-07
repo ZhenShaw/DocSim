@@ -1,0 +1,1 @@
+cs193q teach basic python program similar endcondition cs106ap string list number dicts loop logic function testing decomposition style module cs193q assumes knowledge program language proceeds show common program idea express python cs193q move quickly meet 2 time 3 hour plus lab time complete require python program 
