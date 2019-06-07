@@ -107,4 +107,4 @@ venv.bak/
 .idea/
 
 # big files
-corpus/
+corpus/*.txt
