@@ -80,26 +80,19 @@ def draw(df, axis):
 
 
 # 计算词语语意相似度(原始)
-def comp_sim0(set1, set2, wv):
+def comp_sim_ori(set1, set2, wv):
     N1 = len(set1)
     N2 = len(set2)
 
     df = pd.DataFrame(np.zeros([N1, N2]))
-    n = 0
-    cost2 = 0
+
     for i, w1 in enumerate(set1):
         for j, w2 in enumerate(set2):
             try:
                 w_sim = wv.similarity(w1, w2)  # 计算两个词相似度
-                n = n + 1
             except:
                 w_sim = 0
-            t = time.time()
-            df[i, j] = w_sim
-            cost2 = cost2 + time.time() - t
-    print("计算次数111", n)
-
-    print("耗费时间", cost2)
+            df.iloc[i, j] = w_sim
 
     # 行列都取最大值，然后合起来求平均
     v0 = df.dropna().max(axis=0)
@@ -110,41 +103,140 @@ def comp_sim0(set1, set2, wv):
     return avg_sim
 
 
-# 计算词语语意相似度(优化)
-def comp_sim(set1, set2, wv, df_mark):
+def comp_sim_np(set1, set2, wv):
     N1 = len(set1)
     N2 = len(set2)
 
+    df = np.mat(np.zeros((N1, N2)))
+    n = 0
+    for i, w1 in enumerate(set1):
+        for j, w2 in enumerate(set2):
+            try:
+                w_sim = wv.similarity(w1, w2)  # 计算两个词相似度
+                n = n + 1
+            except:
+                w_sim = 0
+            df[i, j] = w_sim
+    print("计算次数：", n, N1, N2)
+    # 行列都取最大值，然后合起来求平均
+    v0 = np.max(df, axis=0).sum()
+    v1 = np.max(df, axis=1).sum()
+    avg_sim = ((v0 + v1) / (N1 + N2))
+
+    return avg_sim
+
+
+# 计算词语语意相似度(优化)
+def comp_sim_mark1(set1, set2, wv, df_mark):
+    N1 = len(set1)
+    N2 = len(set2)
+    n = 0
     # df = pd.DataFrame(np.zeros([N1, N2]))
-    df1 = np.mat(np.zeros((N1, N2)))
+    df = np.mat(np.zeros((N1, N2)))
 
     for i, w1 in enumerate(set1):
         for j, w2 in enumerate(set2):
-            if w1 == w2:
-                w_sim = 1
-            else:
-                w_sim = df_mark.loc[w1, w2]
+            # if w1 == w2:
+            #     w_sim = 1
+            # else:
+            #     w_sim = df_mark.loc[w1, w2]
+            #
+            # if w_sim == 0:
+            try:
+                t = time.time()
+                w_sim = wv.similarity(w1, w2)  # 计算两个词相似度
+                n = n + time.time() - t
+                # df_mark.loc[w1, w2] = w_sim
+                # df_mark.loc[w2, w1] = w_sim
 
-            if w_sim == 0:
-                try:
-                    w_sim = wv.similarity(w1, w2)  # 计算两个词相似度
-
-                    df_mark.loc[w1, w2] = w_sim
-                    df_mark.loc[w2, w1] = w_sim
-
-                except:
-                    # 比较出错，标志-1
-                    w_sim = 0
-                    df_mark.loc[w1, w2] = -1
-                    df_mark.loc[w2, w1] = -1
-
-            if w_sim == -1:
+            except:
+                # 比较出错，标志-1
                 w_sim = 0
-            df1[i, j] = w_sim
+                # df_mark.loc[w1, w2] = -1
+                # df_mark.loc[w2, w1] = -1
 
+            # if w_sim == -1:
+            # w_sim = 0
+        df[i, j] = w_sim
+    print("计算时间", n)
     # 行列都取最大值，然后合起来求平均
+    v0 = np.max(df, axis=0).sum()
+    v1 = np.max(df, axis=1).sum()
+    avg_sim = ((v0.sum() + v1.sum()) / (N1 + N2))
+    #
     # v0 = df.dropna().max(axis=0)
     # v1 = df.dropna().max(axis=1)
-    # avg_sim = ((v0.sum() + v1.dropna().sum()) /
-    #            (len(v0.dropna()) + len(v1.dropna())))
-    # return avg_sim
+    # avg_sim = ((v0.sum() + v1.dropna().sum()) / (len(v0.dropna()) + len(v1.dropna())))
+    return avg_sim
+
+
+def compSim_mark(set1, set2, wv, mark, record, wordlist):
+    N1 = len(set1)
+    N2 = len(set2)
+    fSim = 0
+
+    df = np.mat(np.zeros([N1, N2]))
+
+    w1_pos = 0
+    i = 0
+    j = 0
+    f = 0
+    n = 0
+    for w1 in set1:
+        w1_pos = 0
+        judge = 0
+        j = 0
+        for w2 in set2:
+            if w1 == w2:
+                f = 1
+            else:
+                if judge == 0:
+                    if w1 in record:
+                        w1_pos = wordlist.index(w1)
+
+                    else:
+                        record.add(w1)
+                        wordlist.append(w1)
+                        w1_pos = len(wordlist) - 1
+
+                    judge = 1
+
+                if w2 in record:
+                    w2_pos = wordlist.index(w2)
+
+                    f = mark[w1_pos, w2_pos]
+                    if f == 0:  # 没比较过
+                        try:
+
+                            f = wv.similarity(w1, w2)
+
+                        except:
+                            f = -1
+
+                        mark[w1_pos, w2_pos] = f
+                        mark[w2_pos, w1_pos] = f
+
+                else:
+                    record.add(w2)
+                    wordlist.append(w2)
+                    w2_pos = len(wordlist) - 1
+                    try:
+
+                        f = wv.similarity(w1, w2)
+
+                    except:
+                        f = -1
+
+                    mark[w1_pos, w2_pos] = f
+                    mark[w2_pos, w1_pos] = f
+
+            df[i, j] = f
+            j = j + 1
+
+        i = i + 1
+
+    v0 = np.max(df, axis=0).sum()
+    v1 = np.max(df, axis=1).sum()
+    fSim = ((v0 + v1) / (N1 + N2))
+
+    return fSim

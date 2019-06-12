@@ -51,7 +51,8 @@ if __name__ == "__main__":
         set1 = doc_set_list[i]
         for j in range(i + 1, L):
             set2 = doc_set_list[j]
-            df.iloc[i, j] = comp_sim(set1, set2, wv, df_mark)  # 有标志矩阵
+            # df.iloc[i, j] = comp_sim(set1, set2, wv, df_mark)  # 有标志矩阵
+            df.iloc[i, j] = comp_sim_np(set1, set2, wv)  # 无有标志矩阵
             # df.iloc[i, j] = comp_sim0(set1, set2, wv)  # 无有标志矩阵
             print(i, j, "次 对比结果：", df.iloc[i, j], "对比时间：", time.time() - start)
     print(df)
