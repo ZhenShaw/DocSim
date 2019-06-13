@@ -73,7 +73,7 @@ def draw(df, axis, file="pic"):
     df.columns = axis
 
     sns.set(font='STSong')  # 解决中文字体显示
-    f, ax = plt.subplots(figsize=(50, 50))
+    f, ax = plt.subplots(figsize=(9, 6))
     sns.heatmap(df, annot=True, linewidths=.5, ax=ax, cmap="vlag")
     plt.savefig("pic/" + file + ".jpg")
     plt.show()

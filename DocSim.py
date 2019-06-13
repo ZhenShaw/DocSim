@@ -30,12 +30,18 @@ if __name__ == "__main__":
         doc_set_list.append(doc_set)
 
     # 初始化标志矩阵
+    # axis_set = get_axis(doc_set_list)
+    # axis_len = len(axis_set)
+    # df_mark = pd.DataFrame(np.zeros([axis_len, axis_len]))
+    #
+    # df_mark.index = axis_set
+    # df_mark.columns = df_mark.index
     axis_set = get_axis(doc_set_list)
     axis_len = len(axis_set)
-    df_mark = pd.DataFrame(np.zeros([axis_len, axis_len]))
+    mark = np.mat(np.zeros(([axis_len, axis_len])))
 
-    df_mark.index = axis_set
-    df_mark.columns = df_mark.index
+    record = set()
+    wordlist = []
 
     # 加载语料库
     corpus = r"./corpus/100000-small.txt"  # 小语料库
@@ -52,13 +58,11 @@ if __name__ == "__main__":
         for j in range(i + 1, L):
             set2 = doc_set_list[j]
             # df.iloc[i, j] = comp_sim(set1, set2, wv, df_mark)  # 有标志矩阵
-            df.iloc[i, j] = comp_sim_np(set1, set2, wv)  # 无有标志矩阵
-            # df.iloc[i, j] = comp_sim0(set1, set2, wv)  # 无有标志矩阵
-            print(i, j, "次 对比结果：", df.iloc[i, j], "对比时间：", time.time() - start)
-    print(df)
+            # df.iloc[i, j] = comp_sim_np(set1, set2, wv)  # 无有标志矩阵
+            # df.iloc[i, j] = comp_sim_ori(set1, set2, wv)  # 无有标志矩阵
+            # print(i, j, "次 对比结果：", df.iloc[i, j], "对比时间：", time.time() - start)
+            df.iloc[i, j] = compSim_mark(set1, set2, wv, mark, record, wordlist)
     print("结果时间：", time.time() - start)
 
-    # 保存文件
-
     # 画热点图
-    draw(df, file_name_list)
+    draw(df, file_name_list, "demo_np")
