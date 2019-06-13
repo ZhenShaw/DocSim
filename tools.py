@@ -67,15 +67,15 @@ def load_model(corpus):
 
 
 # 画热点图
-def draw(df, axis):
+def draw(df, axis, file="pic"):
     df = df + df.values.T  # 加上转置
     df.index = axis
     df.columns = axis
 
     sns.set(font='STSong')  # 解决中文字体显示
-    f, ax = plt.subplots(figsize=(9, 6))
+    f, ax = plt.subplots(figsize=(50, 50))
     sns.heatmap(df, annot=True, linewidths=.5, ax=ax, cmap="vlag")
-
+    plt.savefig("pic/" + file + ".jpg")
     plt.show()
 
 
@@ -109,15 +109,19 @@ def comp_sim_np(set1, set2, wv):
 
     df = np.mat(np.zeros((N1, N2)))
     n = 0
+    t = 0
     for i, w1 in enumerate(set1):
         for j, w2 in enumerate(set2):
+            a = time.time()
             try:
                 w_sim = wv.similarity(w1, w2)  # 计算两个词相似度
                 n = n + 1
             except:
                 w_sim = 0
+            t = time.time() - a + t
             df[i, j] = w_sim
     print("计算次数：", n, N1, N2)
+    print("计算时间：", t)
     # 行列都取最大值，然后合起来求平均
     v0 = np.max(df, axis=0).sum()
     v1 = np.max(df, axis=1).sum()
@@ -182,46 +186,43 @@ def compSim_mark(set1, set2, wv, mark, record, wordlist):
     j = 0
     f = 0
     n = 0
+
+    w2_index = {}
+
+    for each in set2:
+        if each in record:
+            w2_pos = wordlist.index(each)
+
+        else:
+            record.add(each)
+            wordlist.append(each)
+            w2_pos = len(wordlist) - 1
+
+        w2_index[each] = w2_pos
+
     for w1 in set1:
         w1_pos = 0
-        judge = 0
+
         j = 0
+
+        if w1 in record:
+            w1_pos = wordlist.index(w1)
+        else:
+            record.add(w1)
+            wordlist.append(w1)
+            w1_pos = len(wordlist) - 1
+
         for w2 in set2:
             if w1 == w2:
                 f = 1
+
             else:
-                if judge == 0:
-                    if w1 in record:
-                        w1_pos = wordlist.index(w1)
+                w2_pos = w2_index[w2]
+                f = mark[w1_pos, w2_pos]
 
-                    else:
-                        record.add(w1)
-                        wordlist.append(w1)
-                        w1_pos = len(wordlist) - 1
-
-                    judge = 1
-
-                if w2 in record:
-                    w2_pos = wordlist.index(w2)
-
-                    f = mark[w1_pos, w2_pos]
-                    if f == 0:  # 没比较过
-                        try:
-
-                            f = wv.similarity(w1, w2)
-
-                        except:
-                            f = -1
-
-                        mark[w1_pos, w2_pos] = f
-                        mark[w2_pos, w1_pos] = f
-
-                else:
-                    record.add(w2)
-                    wordlist.append(w2)
-                    w2_pos = len(wordlist) - 1
+                if f == 0:
                     try:
-
+                        n = n + 1
                         f = wv.similarity(w1, w2)
 
                     except:
@@ -229,7 +230,8 @@ def compSim_mark(set1, set2, wv, mark, record, wordlist):
 
                     mark[w1_pos, w2_pos] = f
                     mark[w2_pos, w1_pos] = f
-
+            if f == -1:
+                f = 0
             df[i, j] = f
             j = j + 1
 
@@ -239,4 +241,5 @@ def compSim_mark(set1, set2, wv, mark, record, wordlist):
     v1 = np.max(df, axis=1).sum()
     fSim = ((v0 + v1) / (N1 + N2))
 
+    # print(n)
     return fSim
